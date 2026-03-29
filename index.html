@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roselyn Hart Photography</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #FAF6F0;
+    --warm-white: #FDF9F4;
+    --gold: #C9A96E;
+    --gold-light: #E2C898;
+    --blush: #E8C4B0;
+    --deep: #2C2018;
+    --mid: #7A5C42;
+    --text: #3D2B1A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.4s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 28px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(250,246,240,0.95) 0%, rgba(250,246,240,0) 100%);
+    animation: fadeDown 1s ease 0.5s both;
+  }
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:none; } }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--deep);
+    text-decoration: none;
+  }
+  .logo span { color: var(--gold); font-style: italic; }
+
+  .nav-links { display: flex; gap: 48px; list-style: none; }
+  .nav-links a {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--mid); text-decoration: none;
+    position: relative; transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px; background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--deep); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold);
+    padding: 10px 24px; text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--cream); }
+
+  /* HERO */
+  .hero {
+    height: 100vh; position: relative;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 70% 50%, rgba(201,169,110,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(232,196,176,0.15) 0%, transparent 50%);
+  }
+  .hero-grid {
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 52%; display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px; padding: 8px;
+  }
+  .hero-img {
+    background: var(--blush);
+    overflow: hidden; position: relative;
+    animation: imgReveal 1.2s ease both;
+  }
+  .hero-img:nth-child(1) { animation-delay: 0.3s; border-radius: 120px 0 0 0; }
+  .hero-img:nth-child(2) { animation-delay: 0.5s; grid-row: span 2; border-radius: 0 0 120px 0; }
+  .hero-img:nth-child(3) { animation-delay: 0.7s; }
+  @keyframes imgReveal { from { opacity:0; transform:scale(1.05); } to { opacity:1; transform:scale(1); } }
+
+  .hero-img-inner {
+    width: 100%; height: 100%; min-height: 200px;
+    background-size: cover; background-position: center;
+    transition: transform 0.8s ease;
+    position: relative;
+  }
+  .hero-img:hover .hero-img-inner { transform: scale(1.04); }
+
+  /* Elegant photo placeholders with gradients */
+  .ph-1 { background: linear-gradient(135deg, #D4A882 0%, #C49070 30%, #B07858 60%, #9A6448 100%); }
+  .ph-2 { background: linear-gradient(160deg, #E8C8A8 0%, #D4A882 25%, #C09070 55%, #A87858 80%, #8A6040 100%); }
+  .ph-3 { background: linear-gradient(110deg, #C8A878 0%, #B89060 40%, #A07848 70%, #886030 100%); }
+
+  /* Silhouette couple overlay */
+  .hero-img-inner::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(44,32,24,0.35) 0%, transparent 60%);
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 60px; max-width: 580px;
+  }
+  .hero-tag {
+    font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+    animation: fadeUp 1s ease 0.2s both;
+  }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6vw, 6rem);
+    font-weight: 300; line-height: 1.0;
+    color: var(--deep);
+    animation: fadeUp 1s ease 0.4s both;
+  }
+  h1 em { font-style: italic; color: var(--gold); display: block; }
+
+  .hero-desc {
+    margin-top: 28px; font-size: 0.9rem; line-height: 1.9;
+    color: var(--mid); max-width: 380px;
+    animation: fadeUp 1s ease 0.6s both;
+  }
+  .hero-actions {
+    margin-top: 44px; display: flex; gap: 20px; align-items: center;
+    animation: fadeUp 1s ease 0.8s both;
+  }
+  .btn-primary {
+    background: var(--gold); color: var(--cream);
+    padding: 16px 40px; font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--deep); transform: translateX(-101%);
+    transition: transform 0.4s ease;
+  }
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+
+  .btn-ghost {
+    color: var(--mid); font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; display: flex; align-items: center; gap: 10px;
+    transition: color 0.3s;
+  }
+  .btn-ghost:hover { color: var(--deep); }
+  .btn-ghost::before {
+    content: ''; width: 30px; height: 1px;
+    background: var(--gold); flex-shrink: 0;
+    transition: width 0.3s;
+  }
+  .btn-ghost:hover::before { width: 50px; }
+
+  .scroll-hint {
+    position: absolute; bottom: 40px; left: 60px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--mid); animation: fadeUp 1s ease 1s both;
+  }
+  .scroll-line {
+    width: 1px; height: 60px; background: var(--gold-light);
+    animation: lineGrow 1.5s ease 1.5s both;
+    transform-origin: top;
+  }
+  @keyframes lineGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+  /* SECTION BASE */
+  section { padding: 120px 60px; }
+
+  .section-label {
+    font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300; line-height: 1.1; color: var(--deep);
+  }
+  h2 em { font-style: italic; }
+
+  /* ABOUT */
+  .about {
+    background: var(--warm-white);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .about-image-wrap {
+    position: relative;
+    height: 600px;
+  }
+  .about-img-main {
+    position: absolute; top: 0; left: 0;
+    width: 75%; height: 90%;
+    background: linear-gradient(145deg, #D4AA80 0%, #B88858 40%, #9A6840 70%, #7A5030 100%);
+    border-radius: 0 120px 0 0;
+  }
+  .about-img-accent {
+    position: absolute; bottom: 0; right: 0;
+    width: 55%; height: 55%;
+    background: linear-gradient(135deg, #E8C8A0 0%, #CCA878 40%, #B08858 80%);
+    border-radius: 120px 0 0 0;
+    border: 6px solid var(--cream);
+  }
+  .gold-pill {
+    position: absolute; top: 40%; right: -20px;
+    background: var(--gold); color: var(--cream);
+    padding: 12px 20px; font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    writing-mode: vertical-rl; text-orientation: mixed;
+    letter-spacing: 0.2em;
+  }
+
+  .about-text p { font-size: 1rem; line-height: 2; color: var(--mid); margin-bottom: 20px; }
+  .about-stats {
+    display: flex; gap: 48px; margin-top: 48px;
+    padding-top: 48px; border-top: 1px solid var(--blush);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 300; color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); margin-top: 8px; }
+
+  /* GALLERY */
+  .gallery { background: var(--cream); }
+  .gallery-header { text-align: center; margin-bottom: 60px; }
+  .gallery-header p { color: var(--mid); margin-top: 16px; font-size: 0.9rem; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 12px;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .g-item {
+    overflow: hidden; position: relative;
+    background: var(--blush);
+    cursor: none;
+  }
+  .g-item:nth-child(1) { grid-column: 1/6; grid-row: 1/3; min-height: 500px; border-radius: 100px 0 0 0; }
+  .g-item:nth-child(2) { grid-column: 6/9; grid-row: 1/2; min-height: 240px; }
+  .g-item:nth-child(3) { grid-column: 9/13; grid-row: 1/2; min-height: 240px; border-radius: 0 100px 0 0; }
+  .g-item:nth-child(4) { grid-column: 6/10; grid-row: 2/3; min-height: 240px; }
+  .g-item:nth-child(5) { grid-column: 10/13; grid-row: 2/3; min-height: 240px; }
+  .g-item:nth-child(6) { grid-column: 1/5; grid-row: 3/4; min-height: 300px; border-radius: 0 0 0 100px; }
+  .g-item:nth-child(7) { grid-column: 5/9; grid-row: 3/4; min-height: 300px; }
+  .g-item:nth-child(8) { grid-column: 9/13; grid-row: 3/4; min-height: 300px; border-radius: 0 0 100px 0; }
+
+  .g-fill {
+    width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+    transition: transform 0.7s ease;
+    position: relative;
+  }
+  .g-fill::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(44,32,24,0.4) 0%, transparent 50%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .g-item:hover .g-fill { transform: scale(1.06); }
+  .g-item:hover .g-fill::after { opacity: 1; }
+
+  .g-1 { background: linear-gradient(155deg, #E0C0A0 0%, #C8A080 30%, #B08060 60%, #906040 90%); }
+  .g-2 { background: linear-gradient(120deg, #D8B890 0%, #C09870 50%, #A87850 100%); }
+  .g-3 { background: linear-gradient(170deg, #ECD0B0 0%, #D4B090 40%, #BC9070 80%); }
+  .g-4 { background: linear-gradient(140deg, #C8A870 0%, #B08850 40%, #986840 80%); }
+  .g-5 { background: linear-gradient(110deg, #DCC0A0 0%, #C4A080 50%, #AC8060 100%); }
+  .g-6 { background: linear-gradient(160deg, #E4C8A8 0%, #CCA888 40%, #B48868 80%); }
+  .g-7 { background: linear-gradient(130deg, #D0A878 0%, #B88858 50%, #A06840 100%); }
+  .g-8 { background: linear-gradient(145deg, #C8B090 0%, #B09070 40%, #987050 80%); }
+
+  /* SERVICES */
+  .services {
+    background: var(--deep);
+    color: var(--cream);
+  }
+  .services .section-label { color: var(--gold-light); }
+  .services h2 { color: var(--cream); }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 2px; margin-top: 60px;
+  }
+  .service-card {
+    background: rgba(255,255,255,0.04);
+    padding: 56px 40px;
+    border-top: 1px solid rgba(201,169,110,0.2);
+    transition: background 0.4s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 0;
+    background: linear-gradient(to top, rgba(201,169,110,0.12), transparent);
+    transition: height 0.5s ease;
+  }
+  .service-card:hover { background: rgba(255,255,255,0.07); }
+  .service-card:hover::before { height: 100%; }
+
+  .service-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem; font-weight: 300; color: rgba(201,169,110,0.2);
+    line-height: 1; margin-bottom: 24px;
+  }
+  .service-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; color: var(--cream);
+    margin-bottom: 16px;
+  }
+  .service-desc { font-size: 0.85rem; line-height: 1.9; color: rgba(250,246,240,0.55); }
+  .service-price {
+    margin-top: 32px; font-size: 0.6rem;
+    letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold-light);
+  }
+
+  /* TESTIMONIALS */
+  .testimonials { background: var(--warm-white); text-align: center; }
+  .testimonials h2 { margin-bottom: 64px; }
+  .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; }
+  .testi-card {
+    background: var(--cream); padding: 48px 36px;
+    border-bottom: 3px solid var(--blush);
+    transition: border-color 0.3s, transform 0.3s;
+    text-align: left;
+  }
+  .testi-card:hover { border-color: var(--gold); transform: translateY(-6px); }
+  .testi-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; color: var(--gold-light); line-height: 0.5;
+    margin-bottom: 16px;
+  }
+  .testi-text { font-size: 0.9rem; line-height: 1.9; color: var(--mid); font-style: italic; }
+  .testi-author {
+    margin-top: 28px; font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold);
+  }
+
+  /* CONTACT */
+  .contact {
+    background: var(--cream);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;
+  }
+  .contact-text p { font-size: 1rem; line-height: 2; color: var(--mid); margin-top: 20px; }
+  .contact-details { margin-top: 48px; }
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 20px;
+    margin-bottom: 28px;
+  }
+  .contact-icon { width: 2px; height: 40px; background: var(--gold); flex-shrink: 0; margin-top: 4px; }
+  .contact-item-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+  .contact-item-val { font-size: 0.95rem; color: var(--deep); margin-top: 4px; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 20px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); }
+  .form-input, .form-textarea {
+    background: transparent; border: none;
+    border-bottom: 1px solid var(--blush);
+    padding: 12px 0; font-family: 'Jost', sans-serif;
+    font-size: 0.9rem; color: var(--deep);
+    outline: none; transition: border-color 0.3s;
+    width: 100%;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--gold); }
+  .form-textarea { height: 100px; resize: none; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .submit-btn {
+    background: var(--deep); color: var(--cream);
+    border: none; padding: 18px 48px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    cursor: none; margin-top: 12px; align-self: flex-start;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .submit-btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold); transform: translateX(-101%);
+    transition: transform 0.4s ease;
+  }
+  .submit-btn:hover::before { transform: translateX(0); }
+  .submit-btn span { position: relative; z-index: 1; }
+
+  /* FOOTER */
+  footer {
+    background: var(--deep); color: rgba(250,246,240,0.5);
+    padding: 60px; display: flex;
+    align-items: center; justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; color: var(--cream);
+  }
+  .footer-logo span { color: var(--gold); font-style: italic; }
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(250,246,240,0.5); text-decoration: none; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--gold-light); }
+  .footer-copy { font-size: 0.7rem; }
+
+  /* Decorative elements */
+  .ornament {
+    text-align: center; color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; letter-spacing: 0.3em;
+    margin: 0 auto 20px;
+  }
+
+  @media (max-width: 1024px) {
+    nav { padding: 24px 30px; }
+    .nav-links { gap: 28px; }
+    section { padding: 80px 30px; }
+    .about { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .g-item { grid-column: auto !important; grid-row: auto !important; min-height: 220px !important; border-radius: 0 !important; }
+    .services-grid, .testi-grid { grid-template-columns: 1fr; }
+    .contact { grid-template-columns: 1fr; gap: 60px; }
+    .hero-grid { display: none; }
+    .hero-content { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo"> Framewala <br><span>Photography</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Story</a></li>
+    <li><a href="#gallery">Portfolio</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-grid">
+    <div class="hero-img">
+      <div class="hero-img-inner ph-1"></div>
+    </div>
+    <div class="hero-img">
+      <div class="hero-img-inner ph-2"></div>
+    </div>
+    <div class="hero-img">
+      <div class="hero-img-inner ph-3"></div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-tag">✦ Wedding Photography ✦</p>
+    <h1>Where Love<em>Becomes</em>Timeless</h1>
+    <p class="hero-desc">Every love story deserves to be told with grace, warmth, and extraordinary artistry. I capture the moments you'll want to relive forever.</p>
+    <div class="hero-actions">
+      <a href="#gallery" class="btn-primary"><span>View Portfolio</span></a>
+      <a href="#contact" class="btn-ghost">Book a Session</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-image-wrap">
+    <div class="about-img-main"></div>
+    <div class="about-img-accent"></div>
+    <div class="gold-pill">Est. 2014</div>
+  </div>
+  <div class="about-text">
+    <p class="section-label">✦ My Story</p>
+    <h2>A Passion for<em>Authentic Moments</em></h2>
+    <p style="margin-top:28px;">I'm Sumon Guho — a wedding photographer based in the heart of the countryside, with a deep love for golden light, honest emotions, and love stories in all their beautiful complexity.</p>
+    <p>My approach is gentle and unobtrusive. I blend into your day so you can be fully present, while I work quietly to preserve every stolen glance, every tear of joy, every wild laugh.</p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">320+</div>
+        <div class="stat-label">Weddings Captured</div>
+      </div>
+      <div>
+        <div class="stat-num">11</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">18</div>
+        <div class="stat-label">Countries Traveled</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="gallery-header">
+    <p class="section-label">✦ Portfolio</p>
+    <h2>Stories Told in <em>Light & Shadow</em></h2>
+    <p>A glimpse into the love stories I've had the honour of capturing</p>
+  </div>
+  <div class="gallery-grid">
+    <div class="g-item"><div class="g-fill g-1"></div></div>
+    <div class="g-item"><div class="g-fill g-2"></div></div>
+    <div class="g-item"><div class="g-fill g-3"></div></div>
+    <div class="g-item"><div class="g-fill g-4"></div></div>
+    <div class="g-item"><div class="g-fill g-5"></div></div>
+    <div class="g-item"><div class="g-fill g-6"></div></div>
+    <div class="g-item"><div class="g-fill g-7"></div></div>
+    <div class="g-item"><div class="g-fill g-8"></div></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <p class="section-label">✦ Services</p>
+  <h2>Choose Your <em>Perfect Package</em></h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-title">Couple Phoshott</div>
+      <p class="service-desc">Intimate, intentional, and breathtakingly personal. For couples who choose love over logistics — up to 4 hours of soulful coverage.</p>
+      <p class="service-price">Starting at 5,000</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-title">The Wedding Celebration</div>
+      <p class="service-desc">Full-day coverage from morning preparations to the last dance. 8 hours of artful storytelling, delivering 500+ edited images.</p>
+      <p class="service-price">Starting at Starting :30,000</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-title">The BirthDay</div>
+      <p class="service-desc">The complete experience. Two photographers, full weekend coverage, engagement session, and a custom fine-art album crafted to last generations.</p>
+      <p class="service-price">Starting at: 5,500</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <p class="section-label">✦ Kind Words</p>
+  <h2>What Couples Are <em>Saying</em></h2>
+  <div class="testi-grid" style="margin-top:20px;">
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">Roselyn has an incredible ability to disappear into the background while somehow catching every single meaningful moment. Our album is the most treasured thing we own.</p>
+      <p class="testi-author">— Sophie & James, Tuscany 2024</p>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">We were nervous in front of a camera but Roselyn made us feel so at ease. The photos look like scenes from a film — warm, natural, and deeply us.</p>
+      <p class="testi-author">— Clara & Ethan, The Cotswolds 2024</p>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">I looked at our photos and cried. Not just because they're beautiful, but because they're real. Roselyn captured who we actually are, not who we were trying to be.</p>
+      <p class="testi-author">— Priya & Noah, Kerala 2023</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-text">
+    <p class="section-label">✦ Let's Connect</p>
+    <h2>Begin Your <em>Love Story</em></h2>
+    <p>I take on a limited number of weddings each year to ensure every couple receives my full care and attention. Reach out — I'd love to hear about your day.</p>
+    <div class="contact-details">
+      <div class="contact-item">
+        <div class="contact-icon"></div>
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-val">hello@sumonguho</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"></div>
+        <div>
+          <div class="contact-item-label">Phone</div>
+          <div class="contact-item-val">+919051912002</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"></div>
+        <div>
+          <div class="contact-item-label">Based in</div>
+          <div class="contact-item-val">Sodepur,kolkata-700110</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form class="contact-form" onsubmit="return false;">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" placeholder="Ava & Liam">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Wedding Date</label>
+        <input class="form-input" type="text" placeholder="June 2025">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" type="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Venue / Location</label>
+      <input class="form-input" type="text" placeholder="Where is your celebration?">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tell Me About Your Day</label>
+      <textarea class="form-textarea" placeholder="Share your story, vision, and anything else you'd love me to know..."></textarea>
+    </div>
+    <button class="submit-btn" type="submit"><span>Send Your Story →</span></button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Roselyn <span>Hart</span></div>
+  <div class="footer-links">
+    <a href="#about">Story</a>
+    <a href="#gallery">Portfolio</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+    <a href="#">Instagram</a>
+  </div>
+  <div class="footer-copy">© 2025 Roselyn Hart Photography</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.1;
+    ringY += (mouseY - ringY) * 0.1;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .g-item, .service-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      ring.style.width = '56px';
+      ring.style.height = '56px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+    });
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .testi-card, .g-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
